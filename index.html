@@ -1,0 +1,86 @@
+<html>
+
+    <body>
+        <div class="container">
+            <div class="dices"></div>
+            <button onclick="rollDice(12)">
+                Roll Dice
+            </button>
+            <div class="info">
+                <table>
+                    <tr class="table_header">
+                        <th>Face</th>
+                        <th>Percent</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </body>
+
+    <script>
+        function rollDice (times = 1){
+            let dices = document.querySelector('.dices');
+            let info = document.querySelector('.info');
+            let infoMap = {}
+            if(dices.hasChildNodes()){
+                for (let i = 0; i < times; i++) {
+                    let diceResult = Math.floor(Math.random() * 6 + 1);
+                    console.log(dices.childNodes[i])
+                    dices.childNodes[i].innerHTML = `<div class="dot">
+                        <img src="die${diceResult}.png" alt="">
+                        </div>`;
+                    if(infoMap[diceResult]){
+                        infoMap[diceResult] += 1;
+                    }else{
+                        infoMap[diceResult] = 1;
+                    }
+                }
+            }else{
+                for (let i = 0; i < times; i++) {
+                    let diceResult = Math.floor(Math.random() * 6 + 1);
+                    let dice = document.createElement('div');
+                    dice.classList.add('dice');
+                    dice.innerHTML = `<div class="dot">
+                        <img src="die${diceResult}.png" alt="">
+                        </div>`;
+                    dices.appendChild(dice);
+                    if(infoMap[diceResult]){
+                        infoMap[diceResult] += 1;
+                    }else{
+                        infoMap[diceResult] = 1;
+                    }
+                }
+            }
+            console.log(infoMap)
+            let infoDATA = document.querySelectorAll('.infoDATA');
+            if(infoDATA){
+                infoDATA.forEach((item) => {
+                    item.remove();
+                })
+            }
+            for(let i = 6; i > 0; i--){
+                document.querySelector('.table_header').insertAdjacentHTML('afterend', `<tr class="infoDATA">
+                <td>${i}</td>
+                <td>${
+                    infoMap[i] ? 
+                    (infoMap[i] / times * 100).toFixed(2) + '%' : 
+                    '0%'
+                }</td>  
+            </tr>`)   
+            }
+        }
+        rollDice(12)
+        
+    </script>
+    <style>
+        .dices{
+            display: flex;
+            flex-wrap: wrap;
+        }
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+
+</html>
