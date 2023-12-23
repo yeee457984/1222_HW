@@ -1,0 +1,56 @@
+<html>
+    <body>
+        <!-- EX: 111304009_陳儀臻 -->
+        <h1>Hanoi Tower HW</h1>
+        <div class="tower">
+
+        </div>
+    </body>
+    <script>
+        let step = 0;
+function towerOfHanoi(n, source, auxiliary, target) {
+  if (n === 1) {
+    console.log(`Move disk 1 from ${source} to ${target}`);
+    towerMpa[target].push(towerMpa[source].pop());
+    let temp = JSON.parse(JSON.stringify(towerMpa));
+    console.log(temp)
+    display(temp)
+    return;
+  }
+
+  towerOfHanoi(n - 1, source, target, auxiliary);
+  console.log(`Move disk ${n} from ${source} to ${target}`);
+  towerMpa[target].push(towerMpa[source].pop());
+  let temp = JSON.parse(JSON.stringify(towerMpa));
+  console.log(temp)
+  display(temp)
+  towerOfHanoi(n - 1, auxiliary, source, target);
+}
+function display (displayMap) {
+    let tower = document.querySelector('.tower');
+    tower.innerHTML += `<h4>STEP ${step} </h4>`;
+    step++
+    for(let i = 0; i < 3; i++){
+        let peg = document.createElement('div');
+        peg.innerHTML = Object.keys(towerMpa)[i]+': ';
+        tower.appendChild(peg);
+        peg.innerHTML+=towerMpa[Object.keys(towerMpa)[i]].join(',')
+    }
+    tower.innerHTML+= '<hr> <br>'
+}
+
+// 测试示例
+const sourcePole = [ 3, 2, 1];
+const sourcePeg = 'A';
+const auxiliaryPeg = 'B';
+const targetPeg = 'C';
+const towerMpa = {
+    A: sourcePole,
+    B: [],
+    C: []
+}
+
+display()
+towerOfHanoi(sourcePole.length, sourcePeg, auxiliaryPeg, targetPeg);
+    </script>
+</html>
